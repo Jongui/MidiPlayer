@@ -22,7 +22,8 @@ urls = (
     '/classesTasks', 'classesTasks',
     '/loadTaskInfo', 'loadTaskInfo',
     '/handleMetronome', 'handleMetronome',
-    '/sendAnswer', 'sendAnswer'
+    '/sendAnswer', 'sendAnswer',
+    '/playTask', 'playTask'
 )
 
 class index:
@@ -130,7 +131,12 @@ class sendAnswer:
         student_dao = students.StudentDAO()
         return student_dao.save_answer(id_cours, id_classes, id_task, id_student, answer)
 
-
+class playTask:
+    def GET(self):
+        user_data = web.input()
+        file_name = user_data.fileName
+        pl = player.Player()
+        return pl.play_task(file_name)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())

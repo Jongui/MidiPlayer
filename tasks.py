@@ -42,4 +42,3 @@ class TasksDAO:
         file = open(file_name, "r")
         if file.mode == "r":
             return file.read()
-

@@ -1,5 +1,7 @@
 import pygame
 import pygame.midi
+import thread
+import json
 
 from time import sleep
 
@@ -74,6 +76,135 @@ class Player(object):
         self.midiOutput.note_off(note,dynamic,channel)
         del self.midiOutput
         pygame.midi.quit()
+
+    def play_instrument_1(self, inst, midiOutput):
+        tempo = 0.5
+        for x in range(0, 3):
+            note = 79
+            time = tempo
+            dynamic = 127
+            midiOutput.set_instrument(inst)
+            midiOutput.note_on(note,dynamic,0)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,0)
+            note = 76
+            time = tempo
+            midiOutput.note_on(note,dynamic,0)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,0)
+            note = 79
+            time = tempo / 2
+            midiOutput.note_on(note,dynamic,0)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,0)
+            note = 79
+            time = tempo / 2
+            midiOutput.note_on(note,dynamic,0)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,0)
+            note = 76
+            time = tempo
+            midiOutput.note_on(note,dynamic,0)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,0)
+        del midiOutput
+        pygame.midi.quit()
+    
+    def play_instrument_2(self, inst, midiOutput):
+        channel = 1
+        tempo = 0.5
+        for x in range(0, 3):
+            note = 60
+            note2 = 67
+            time = tempo * 2
+            dynamic = 110
+            midiOutput.set_instrument(inst, channel)
+            midiOutput.note_on(note,dynamic,channel)
+            midiOutput.note_on(note2,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+            midiOutput.note_off(note2,dynamic,channel)
+            note = 67
+            note2 = 74
+            time = tempo
+            midiOutput.note_on(note,dynamic,channel)
+            midiOutput.note_on(note2,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+            midiOutput.note_off(note2,dynamic,channel)
+            note = 60
+            note2 = 67
+            time = tempo
+            midiOutput.note_on(note,dynamic,channel)
+            midiOutput.note_on(note2,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+            midiOutput.note_off(note2,dynamic,channel)
+        del midiOutput
+        pygame.midi.quit()
+    
+    def play_instrument_3(self, inst, midiOutput):
+        channel = 2
+        tempo = 0.5
+        for x in range(0, 3):
+            note = 36
+            dynamic = 110
+            time = tempo
+            midiOutput.set_instrument(inst, channel)
+            midiOutput.note_on(note,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+            note = 40
+            time = tempo
+            midiOutput.note_on(note,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+            note = 43
+            time = tempo
+            midiOutput.note_on(note,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+            note = 40
+            time = tempo
+            midiOutput.note_on(note,dynamic,channel)
+            sleep(time)
+            midiOutput.note_off(note,dynamic,channel)
+        
+        del midiOutput
+        pygame.midi.quit()
+    
+    def play_task(self, file_name):
+        file = open(file_name, "r")
+        if file.mode == "r":
+            ret = file.read()
+            data = json.loads(ret)
+        
+        port = 2
+        pygame.init()
+        pygame.midi.init()
+        midiOutput = pygame.midi.Output(port, 0)
+        channel = 0;
+        inst_code = 10
+        for lines in data["lines"]:
+            notes = lines["notes"]
+            instr = lines["inst"]
+            thread.start_new_thread( self.play_instrument, (inst_code, notes, channel, midiOutput, ) )
+            channel = channel + 1
+            inst_code = 14
+        
+        return "Terminou"
+        '''thread.start_new_thread( self.play_instrument_1, (10, midiOutput, ) )
+        thread.start_new_thread( self.play_instrument_2, (14, midiOutput, ) )
+        thread.start_new_thread( self.play_instrument_3, (36, midiOutput, ) )'''
+
+    def play_instrument(self, inst, notes, channel, midiOutput):
+        dynamic = 120
+        midiOutput.set_instrument(inst, channel)
+        for note in notes:
+            midiOutput.note_on(note["note"],dynamic,channel)
+            sleep(note["time"])
+            midiOutput.note_off(note["note"],dynamic,channel)
+
 
 class Player1(object):
     def __init__(self):
