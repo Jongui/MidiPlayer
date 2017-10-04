@@ -47,18 +47,17 @@ class Player(object):
         pygame.midi.init()
         midiOutput = pygame.midi.Output(port, 0)
         channel = 0;
-        inst_code = 10
         for lines in data["lines"]:
             notes = lines["notes"]
             instr = lines["inst"]
-            thread.start_new_thread( self.play_instrument, (inst_code, notes, channel, midiOutput, ) )
+            thread.start_new_thread( self.play_instrument, (instr["code"], notes, channel, midiOutput, ) )
             channel = channel + 1
-            inst_code = 14
-
+        return str(ret)
+    
     def play_instrument(self, inst, notes, channel, midiOutput):
-        dynamic = 120
         midiOutput.set_instrument(inst, channel)
         for note in notes:
+            dynamic = note["dynamic"]
             midiOutput.note_on(note["note"],dynamic,channel)
             sleep(note["time"])
             midiOutput.note_off(note["note"],dynamic,channel)
