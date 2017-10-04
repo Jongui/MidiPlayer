@@ -7,21 +7,18 @@ import player
 import students
 import classes
 import tasks
-import metronome
 
 from time import sleep
 
 urls = (
     '/', 'index',
     '/playScript', 'playScript',
-    '/majorscale', 'majorscale',
     '/login', 'login',
     '/createUser', 'createUser',
     '/studentCourses', 'studentCourses',
     '/coursClasses', 'coursClasses',
     '/classesTasks', 'classesTasks',
     '/loadTaskInfo', 'loadTaskInfo',
-    '/handleMetronome', 'handleMetronome',
     '/sendAnswer', 'sendAnswer',
     '/playTask', 'playTask'
 )
@@ -48,17 +45,6 @@ class playScript:
         dynamic = int(user_data.dynamic)
         pl = player.Player();
         pl.playScriptNote(note, channel, inst, dynamic, time)
-
-
-class majorscale:
-    def GET(self):
-        user_data = web.input()
-        note = int(user_data.note)
-        inst = int(user_data.inst)
-        dynamic = int(user_data.dynamic)
-        channel = 0
-        pl = Player()
-        thread.start_new_thread( pl.play_major_scale, (note, inst, dynamic, channel,) )
 
 class login:
     def GET(self):
@@ -108,17 +94,6 @@ class loadTaskInfo:
         id_task = user_data.idTask
         tasks_dao = tasks.TasksDAO();
         return tasks_dao.task_info(id_cours, id_classes, id_task);
-
-class handleMetronome:
-    def GET(self):
-        user_data = web.input()
-        tack = float(user_data.tack)
-        action = int(user_data.action)
-        metr = metronome.Metronome(tack)
-        if action == 0:
-            thread.start_new_thread( metr.instance.start_metronome, (tack,))
-        else:
-            metr.instance.stop_metronome()
 
 class sendAnswer:
     def GET(self):
