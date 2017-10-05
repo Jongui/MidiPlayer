@@ -12,7 +12,6 @@ class Courses:
 
     def to_json(self):
         ret = json.dumps({"idCourses":self.idCourses, "coursName": self.coursName, "initDate":self.initDate.strftime('%Y-%m-%d'), "endDate":self.endDate.strftime('%Y-%m-%d'), "creationDate":self.creationDate.strftime('%Y-%m-%d'), "hours":self.hours})
-        print(ret)
         return ret
 
 class CoursesDAO:
@@ -28,6 +27,5 @@ class CoursesDAO:
         db.close()
         output = output[:-1]
         output += "]}"
-        print str(output)
         return output
 

@@ -14,34 +14,33 @@ class Player(object):
         pygame.init()
         pygame.midi.init()
         port = 2
-        self.midiOutput = pygame.midi.Output(port, channel)
-        self.midiOutput.set_instrument(inst)
+        midiOutput = pygame.midi.Output(port, channel)
+        midiOutput.set_instrument(inst, channel)
         if action == 0:
-            self.midiOutput.note_on(note,dynamic,channel)
+            midiOutput.note_on(note,dynamic,channel)
         elif action == 1:
-            self.midiOutput.note_off(note,dynamic,channel)
-            del self.midiOutput
+            midiOutput.note_off(note,dynamic,channel)
+            del midiOutput
             pygame.midi.quit()
 
     def playScriptNote(self, note, channel, inst, dynamic, time):
-        print("Note: " + str(note) + " Channel: " + str(channel) + " Inst: " + str(inst) + " Dynamic: " + str(dynamic) + " Time: " + str(time))
         pygame.init()
         pygame.midi.init()
         port = 2
-        self.midiOutput = pygame.midi.Output(port, channel)
-        self.midiOutput.set_instrument(inst)
-        self.midiOutput.note_on(note,dynamic,channel)
+        midiOutput = pygame.midi.Output(port, channel)
+        midiOutput.set_instrument(inst, channel)
+        midiOutput.note_on(note,dynamic,channel)
         sleep(time)
-        self.midiOutput.note_off(note,dynamic,channel)
-        del self.midiOutput
+        midiOutput.note_off(note,dynamic,channel)
+        del midiOutput
         pygame.midi.quit()
 
     def play_task(self, file_name):
-        file = open(file_name, "r")
+        local_name = "Activities/" + file_name
+        file = open(local_name, "r")
         if file.mode == "r":
             ret = file.read()
             data = json.loads(ret)
-        
         port = 2
         pygame.init()
         pygame.midi.init()

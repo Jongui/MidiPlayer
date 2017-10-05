@@ -22,7 +22,6 @@ class TasksDAO:
         curs = db.cursor()
         curs.execute("SELECT * FROM Tasks WHERE idClasses=%s AND idCourses=%s", (id_classes, id_cours))
         sql = "SELECT * FROM Tasks WHERE idClasses=%s AND idCourses=%s" % (id_classes, id_cours)
-        print(sql)
         for reading in curs.fetchall():
             task = Tasks(reading[0], reading[1], reading[2], reading[3], reading[4], reading[5], reading[6])
             output += task.to_json() + ","

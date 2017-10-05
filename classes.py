@@ -17,7 +17,6 @@ class ClassesDAO:
         db = MySQLdb.connect("localhost", "MusicPlayerUser", "PlayNice", "MusicClasses")
         curs = db.cursor()
         curs.execute("SELECT * FROM Classes WHERE idCourses=%s", id_cours,)
-        print("SELECT * FROM Classes WHERE idCourses=%s".format(id_cours))
         for reading in curs.fetchall():
             classes = Classes(reading[0], reading[1], reading[2])
             output += classes.to_json() + ","

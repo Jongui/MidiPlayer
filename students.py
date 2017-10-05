@@ -1,6 +1,7 @@
 import MySQLdb
 import json
 import courses
+import resource
 
 class Student:
     def __init__(self, idStudent, name):
@@ -21,11 +22,10 @@ class StudentDAO:
     def __init__(self):
         db = MySQLdb.connect("localhost", "MusicPlayerUser", "PlayNice", "MusicClasses")
 
-    def loginUser(self, user_name, password):
+    def loginUser(self, user_name, password, locale):
         db = MySQLdb.connect("localhost", "MusicPlayerUser", "PlayNice", "MusicClasses")
         curs = db.cursor()
         sql = "SELECT * FROM Students WHERE idStudents=%s" % (user_name)
-        print(sql)
         curs.execute ("SELECT * FROM Students WHERE idStudents=%s", user_name,)
         db.close()
         output = ""
@@ -38,10 +38,12 @@ class StudentDAO:
             else:
                 sucess = False;
         if sucess == True:
-            output = '{"status":"0", "message":"User connected", "Student":' + student.to_json() + '}'
+            message = resource.loadResourceData(locale, "userConnected")
+            output = '{"status":"0", "message":' + '"' + message + '"' + ', "Student":' + student.to_json() + '}'
         else:
-            output = json.dumps({"status":"1", "message":"Password or User name fail"})
-        print str(output)
+            message = resource.loadResourceData(locale, "userNotConnected")
+            output = '{"status":"1", "message":' + '"' + message + '"}'
+            #json.dumps({"status":"1", "message":"Password or User name fail"})
         return output
 
     def createUser(self, idStudent, name, email, password):
@@ -49,7 +51,6 @@ class StudentDAO:
             db = MySQLdb.connect("localhost", "MusicPlayerUser", "PlayNice", "MusicClasses")
             curs = db.cursor()
             sql = "insert into Students VALUES('%s', '%s', '%s', '%s')" % (idStudent, name, email, password,)
-            print("Comando SQL: " + sql)
             curs.execute (sql)
             db.commit()
             db.close()
@@ -65,7 +66,6 @@ class StudentDAO:
             db = MySQLdb.connect("localhost", "MusicPlayerUser", "PlayNice", "MusicClasses")
             curs = db.cursor()
             sql = "SELECT idCourses FROM Students_Courses WHERE idStudents='%s'" % (id_student,)
-            print("Comando SQL: " + sql)
             curs.execute (sql)
             db.commit()
             db.close()
@@ -79,12 +79,13 @@ class StudentDAO:
 
         return output
 
-    def save_answer(self, id_cours, id_classes, id_task, id_student, answer):
+    def save_answer(self, id_cours, id_classes, id_task, id_student, answer, locale):
         try:
             file_name = id_student + str(id_cours) + str(id_classes) + str(id_task)
             file= open(file_name,"w+")
             file.write(answer)
-            output = json.dumps({"status": "0", "message": "File saved"})
+            message = resource.loadResourceData(locale, "answerSaved")
+            output = json.dumps({"status": "0", "message": message})
         except MySQLdb.Error as err:
             print("Something went wrong: {}". format(err))
             output = json.dumps({"status": "1", "message":str(err)})

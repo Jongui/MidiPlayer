@@ -11,7 +11,7 @@ import tasks
 from time import sleep
 
 urls = (
-    '/', 'index',
+    '/play', 'play',
     '/playScript', 'playScript',
     '/login', 'login',
     '/createUser', 'createUser',
@@ -23,7 +23,7 @@ urls = (
     '/playTask', 'playTask'
 )
 
-class index:
+class play:
     def GET(self):
         user_data = web.input()
         time = float(user_data.time)
@@ -49,10 +49,11 @@ class playScript:
 class login:
     def GET(self):
         user_data = web.input()
-        id_student = user_data.idStudent;
-        password = user_data.password;
-        student_dao = students.StudentDAO();
-        return student_dao.loginUser(id_student, password)
+        id_student = user_data.idStudent
+        password = user_data.password
+        locale = user_data.locale
+        student_dao = students.StudentDAO()
+        return student_dao.loginUser(id_student, password, locale)
 
 class createUser:
     def GET(self):
@@ -102,9 +103,10 @@ class sendAnswer:
         id_classes = user_data.idClasses
         id_task = user_data.idTask
         id_student = user_data.idStudent
+        locale = user_data.locale
         answer = user_data.answer
         student_dao = students.StudentDAO()
-        return student_dao.save_answer(id_cours, id_classes, id_task, id_student, answer)
+        return student_dao.save_answer(id_cours, id_classes, id_task, id_student, answer, locale)
 
 class playTask:
     def GET(self):
