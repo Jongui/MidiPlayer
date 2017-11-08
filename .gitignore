@@ -1,5 +1,5 @@
-Activities/.*
-Activities/.AppleDouble
+Activities/.AppleDouble/*
+Resources/.AppleDouble/*
 .DS_Store
 __pycache__/
 Answers/
