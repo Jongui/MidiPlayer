@@ -81,7 +81,7 @@ class StudentDAO:
 
     def save_answer(self, id_cours, id_classes, id_task, id_student, answer, locale):
         try:
-            file_name = id_student + str(id_cours) + str(id_classes) + str(id_task)
+            file_name = "Answers/" + id_student + str(id_cours) + str(id_classes) + str(id_task)
             file= open(file_name,"w+")
             file.write(answer)
             message = resource.loadResourceData(locale, "answerSaved")
@@ -91,4 +91,8 @@ class StudentDAO:
             output = json.dumps({"status": "1", "message":str(err)})
         return output
 
-
+    def student_answer(self, id_student, id_cours, id_classes, id_task):
+        file_name = "Answers/" + id_student + str(id_cours) + str(id_classes) + str(id_task)
+        file= open(file_name,"r")
+        if file.mode == "r":
+            return file.read()

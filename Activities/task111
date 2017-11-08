@@ -7,7 +7,7 @@
                       {"time":0.25, "note":79, "dynamic":127},
                       {"time":0.5, "note":76, "dynamic":127}
                     ],
-            "inst": {"code":12, "desc":"Vibraphone"}
+            "inst": {"code":11, "desc":"Vibraphone"}
            },
           {
             "notes":[
@@ -15,15 +15,15 @@
                       {"time":0.5, "note":67, "dynamic":60},
                       {"time":0.5, "note":60, "dynamic":60}
                     ],
-            "inst": {"code":14, "desc":"Xilophone"}
+            "inst": {"code":13, "desc":"Xilophone"}
            },
           {
             "notes":[
-                      {"time":0.5, "note":76, "dynamic":60},
-                      {"time":0.5, "note":74, "dynamic":60},
-                      {"time":1.0, "note":72, "dynamic":60}
+                      {"time":0.5, "note":76, "dynamic":120},
+                      {"time":0.5, "note":74, "dynamic":120},
+                      {"time":1.0, "note":72, "dynamic":120}
                     ],
-            "inst": {"code":10, "desc":"Glockenspiel"}
+            "inst": {"code":9, "desc":"Glockenspiel"}
            }
           ]
 }

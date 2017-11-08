@@ -20,7 +20,8 @@ urls = (
     '/classesTasks', 'classesTasks',
     '/loadTaskInfo', 'loadTaskInfo',
     '/sendAnswer', 'sendAnswer',
-    '/playTask', 'playTask'
+    '/playTask', 'playTask',
+    '/loadStudentAnswer', 'loadStudentAnswer'
 )
 
 class play:
@@ -45,6 +46,7 @@ class playScript:
         dynamic = int(user_data.dynamic)
         pl = player.Player();
         pl.playScriptNote(note, channel, inst, dynamic, time)
+        return '{"played":"yes"}'
 
 class login:
     def GET(self):
@@ -95,6 +97,16 @@ class loadTaskInfo:
         id_task = user_data.idTask
         tasks_dao = tasks.TasksDAO();
         return tasks_dao.task_info(id_cours, id_classes, id_task);
+
+class loadStudentAnswer:
+    def GET(self):
+        user_data = web.input()
+        id_student = user_data.idStudent
+        id_cours = user_data.idCours
+        id_classes = user_data.idClasses
+        id_task = user_data.idTask
+        student_dao = students.StudentDAO()
+        return student_dao.student_answer(id_student, id_cours, id_classes, id_task)
 
 class sendAnswer:
     def GET(self):

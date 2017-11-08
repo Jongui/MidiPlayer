@@ -1,0 +1,7 @@
+Activities/.*
+Activities/.AppleDouble
+.DS_Store
+__pycache__/
+Answers/
+*.pyc
+.AppleDouble/
