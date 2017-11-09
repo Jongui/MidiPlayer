@@ -71,7 +71,7 @@ class StudentDAO:
             db.close()
             for reading in curs.fetchall():
                 coursesArray.append(reading[0])
-            output = coursesDAO.find_user_courses(coursesArray)
+            output = coursesDAO.find_user_courses(coursesArray, id_student)
         
         except MySQLdb.Error as err:
             print("Something went wrong: {}".format(err))
