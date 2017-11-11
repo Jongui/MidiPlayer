@@ -7,33 +7,45 @@ from time import sleep
 
 class Player(object):
     
-    def __init__(self):
-        self.stop = False;
+    __instance = None
     
-    def play(self, note, channel, action, inst, dynamic):
+    @staticmethod
+    def getInstance():
+        if Player.__instance == None:
+            Player()
+        return Player.__instance
+    
+    def __init__(self):
+        if Player.__instance != None:
+            raise Exception("Tryed to instanciate Player twice")
+        self.stop = False;
         pygame.init()
         pygame.midi.init()
         port = 2
-        midiOutput = pygame.midi.Output(port, channel)
-        midiOutput.set_instrument(inst, channel)
+        self.midiOutput = pygame.midi.Output(port, 0)
+        Player.__instance = self
+    
+    
+    def play(self, note, channel, action, inst, dynamic):
+        self.midiOutput.set_instrument(inst, channel)
         if action == 0:
-            midiOutput.note_on(note,dynamic,channel)
+            self.midiOutput.note_on(note,dynamic,channel)
         elif action == 1:
-            midiOutput.note_off(note,dynamic,channel)
-            del midiOutput
-            pygame.midi.quit()
+            self.midiOutput.note_off(note,dynamic,channel)
+            #del self.midiOutput
+            #self.pygame.midi.quit()
 
     def playScriptNote(self, note, channel, inst, dynamic, time):
         pygame.init()
         pygame.midi.init()
         port = 2
-        midiOutput = pygame.midi.Output(port, channel)
-        midiOutput.set_instrument(inst, channel)
-        midiOutput.note_on(note,dynamic,channel)
+        #midiOutput = pygame.midi.Output(port, channel)
+        self.midiOutput.set_instrument(inst, channel)
+        self.midiOutput.note_on(note,dynamic,channel)
         sleep(time)
-        midiOutput.note_off(note,dynamic,channel)
-        del midiOutput
-        pygame.midi.quit()
+        self.midiOutput.note_off(note,dynamic,channel)
+        #del midiOutput
+        #pygame.midi.quit()
 
     def play_task(self, file_name):
         local_name = "Activities/" + file_name
@@ -42,14 +54,14 @@ class Player(object):
             ret = file.read()
             data = json.loads(ret)
         port = 2
-        pygame.init()
-        pygame.midi.init()
-        midiOutput = pygame.midi.Output(port, 0)
+        #pygame.init()
+        #pygame.midi.init()
+        #midiOutput = pygame.midi.Output(port, 0)
         channel = 0;
         for lines in data["lines"]:
             notes = lines["notes"]
             instr = lines["inst"]
-            thread.start_new_thread( self.play_instrument, (instr["code"], notes, channel, midiOutput, ) )
+            thread.start_new_thread( self.play_instrument, (instr["code"], notes, channel, self.midiOutput, ) )
             channel = channel + 1
         return str(ret)
     

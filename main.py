@@ -33,7 +33,8 @@ class play:
         channel = int(user_data.channel)
         action = int(user_data.action)
         dynamic = int(user_data.dynamic)
-        pl = player.Player();
+        #pl = player.Player();
+        pl = player.Player.getInstance()
         thread.start_new_thread( pl.play, (note, channel, action, inst, dynamic,) )
 
 class playScript:
@@ -44,7 +45,8 @@ class playScript:
         inst = int(user_data.inst)
         channel = int(user_data.channel)
         dynamic = int(user_data.dynamic)
-        pl = player.Player();
+        #pl = player.Player();
+        pl = player.Player.getInstance()
         pl.playScriptNote(note, channel, inst, dynamic, time)
         return '{"played":"yes"}'
 
@@ -124,7 +126,8 @@ class playTask:
     def GET(self):
         user_data = web.input()
         file_name = user_data.fileName
-        pl = player.Player()
+        #pl = player.Player();
+        pl = player.Player.getInstance()
         return pl.play_task(file_name)
 
 if __name__ == "__main__":
